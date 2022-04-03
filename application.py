@@ -6,6 +6,15 @@ from DataProvider import *
 class Application:
     
     def __init__(self) -> None:
+        def write_log(mode):
+            with open("log/log_startapp", mode) as f:
+                current_time = datetime.datetime.now()
+                f.write(f"AppStart : {current_time.day}-{current_time.month}-{current_time.year} | {current_time.hour}:{current_time.minute}:{current_time.second}\n")
+        
+        try:
+            write_log("a")
+        except FileNotFoundError:
+            write_log("w")
         self.provider = Provider()
         
         

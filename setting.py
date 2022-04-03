@@ -106,6 +106,3 @@ class Setting:
         self.dict_setting["id_historical"] = self.id_historical + "\n"
         self.set_ConfigAndWriteFile()
         return value
-
-xset = Setting()
-xset.set_ConfigAndWriteFile()
