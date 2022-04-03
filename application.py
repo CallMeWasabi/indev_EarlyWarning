@@ -16,7 +16,7 @@ class Application:
         except FileNotFoundError:
             write_log("w")
         self.provider = Provider()
-        
+        self.setting = Setting()
         
         window = Tk()
         window.title("EarlyWarning")
@@ -49,7 +49,7 @@ class Application:
         
         def reload_widget_tree():
             pass
-        
+                
         
         def reload_widget_button():
             dict_data = self.provider.get_data()
@@ -99,6 +99,28 @@ class Application:
         reload_widget_button()
         
         
+        analog_tree = ttk.Treeview(self.frame_page1_widget, height=20)
+        analog_tree["column"] = ("Date", "Time", "Id", "Name", "Status", "Desc", "Code")
+        
+        analog_tree.column("#0", width=20, minwidth=25)
+        analog_tree.column("Date", anchor=W, width=120)
+        analog_tree.column("Time", anchor=W, width=150)
+        analog_tree.column("Id", anchor=W, width=50)
+        analog_tree.column("Name", anchor=CENTER, width=185)
+        analog_tree.column("Status", anchor=W, width=150)
+        analog_tree.column("Desc", anchor=W, width=150)
+        analog_tree.column("Code", anchor=W, width=150)
+        
+        analog_tree.heading("#0", text="", anchor=CENTER)
+        analog_tree.heading("Date", text="Date", anchor=CENTER)
+        analog_tree.heading("Time", text="Time", anchor=CENTER)
+        analog_tree.heading("Name", text="Name", anchor=CENTER)
+        analog_tree.heading("Id", text="Id", anchor=CENTER)
+        analog_tree.heading("Name", text="Name", anchor=CENTER)
+        analog_tree.heading("Status", text="Status", anchor=CENTER)
+        analog_tree.heading("Desc", text="Desc", anchor=CENTER)
+        analog_tree.heading("Code", text="Code", anchor=CENTER)
+        analog_tree.place(x=10, y=100)
         
         
     
