@@ -48,9 +48,36 @@ class Application:
     def renderWidget_page1(self) -> None:
         
         def reload_widget_tree():
-            pass
-                
-        
+            analog_tree = ttk.Treeview(self.frame_page1_widget, height=20)
+            analog_tree["column"] = ("Date", "Time", "Id", "Name", "Status", "Desc", "Code")
+            
+            analog_tree.column("#0", width=20, minwidth=25)
+            analog_tree.column("Date", anchor=CENTER, width=120)
+            analog_tree.column("Time", anchor=CENTER, width=150)
+            analog_tree.column("Id", anchor=W, width=50)
+            analog_tree.column("Name", anchor=W, width=185)
+            analog_tree.column("Status", anchor=W, width=150)
+            analog_tree.column("Desc", anchor=CENTER, width=150)
+            analog_tree.column("Code", anchor=CENTER, width=150)
+            
+            analog_tree.heading("#0", text="", anchor=CENTER)
+            analog_tree.heading("Date", text="Date", anchor=CENTER)
+            analog_tree.heading("Time", text="Time", anchor=CENTER)
+            analog_tree.heading("Name", text="Name", anchor=CENTER)
+            analog_tree.heading("Id", text="Id", anchor=CENTER)
+            analog_tree.heading("Name", text="Name", anchor=CENTER)
+            analog_tree.heading("Status", text="Status", anchor=CENTER)
+            analog_tree.heading("Desc", text="Desc", anchor=CENTER)
+            analog_tree.heading("Code", text="Code", anchor=CENTER)
+            analog_tree.place(x=10, y=100)
+            
+            self.provider.iid = 0
+            print(self.provider.list_show_tree)
+            for i in range(0, len(self.provider.list_show_tree)):
+                analog_tree.insert(parent="", index="end", iid=self.provider.get_iid(), value=(self.provider.list_show_tree[i]))
+
+            analog_tree.after(2000, reload_widget_tree)
+            
         def reload_widget_button():
             dict_data = self.provider.get_data()
             button_date.config(text=dict_data["date"])
@@ -60,6 +87,7 @@ class Application:
             button_temperature.config(text=dict_data["temperature"])
             button_humidity.config(text=dict_data["humidity"])
             button_date.after(2000, reload_widget_button)
+            print(len(self.provider.list_show_tree))
             
         
         label_date = Label(self.frame_page1_widget, text="Date", width=15, font=("Ubuntu", 14))
@@ -96,33 +124,33 @@ class Application:
         self.frame_page1_widget.grid_columnconfigure(4, weight=1)
         self.frame_page1_widget.grid_columnconfigure(5, weight=1)
         
+        
+        # analog_tree = ttk.Treeview(self.frame_page1_widget, height=20)
+        # analog_tree["column"] = ("Date", "Time", "Id", "Name", "Status", "Desc", "Code")
+        
+        # analog_tree.column("#0", width=20, minwidth=25)
+        # analog_tree.column("Date", anchor=W, width=120)
+        # analog_tree.column("Time", anchor=W, width=150)
+        # analog_tree.column("Id", anchor=W, width=50)
+        # analog_tree.column("Name", anchor=CENTER, width=185)
+        # analog_tree.column("Status", anchor=W, width=150)
+        # analog_tree.column("Desc", anchor=W, width=150)
+        # analog_tree.column("Code", anchor=W, width=150)
+        
+        # analog_tree.heading("#0", text="", anchor=CENTER)
+        # analog_tree.heading("Date", text="Date", anchor=CENTER)
+        # analog_tree.heading("Time", text="Time", anchor=CENTER)
+        # analog_tree.heading("Name", text="Name", anchor=CENTER)
+        # analog_tree.heading("Id", text="Id", anchor=CENTER)
+        # analog_tree.heading("Name", text="Name", anchor=CENTER)
+        # analog_tree.heading("Status", text="Status", anchor=CENTER)
+        # analog_tree.heading("Desc", text="Desc", anchor=CENTER)
+        # analog_tree.heading("Code", text="Code", anchor=CENTER)
+        # analog_tree.place(x=10, y=100)
+        
+        
         reload_widget_button()
-        
-        
-        analog_tree = ttk.Treeview(self.frame_page1_widget, height=20)
-        analog_tree["column"] = ("Date", "Time", "Id", "Name", "Status", "Desc", "Code")
-        
-        analog_tree.column("#0", width=20, minwidth=25)
-        analog_tree.column("Date", anchor=W, width=120)
-        analog_tree.column("Time", anchor=W, width=150)
-        analog_tree.column("Id", anchor=W, width=50)
-        analog_tree.column("Name", anchor=CENTER, width=185)
-        analog_tree.column("Status", anchor=W, width=150)
-        analog_tree.column("Desc", anchor=W, width=150)
-        analog_tree.column("Code", anchor=W, width=150)
-        
-        analog_tree.heading("#0", text="", anchor=CENTER)
-        analog_tree.heading("Date", text="Date", anchor=CENTER)
-        analog_tree.heading("Time", text="Time", anchor=CENTER)
-        analog_tree.heading("Name", text="Name", anchor=CENTER)
-        analog_tree.heading("Id", text="Id", anchor=CENTER)
-        analog_tree.heading("Name", text="Name", anchor=CENTER)
-        analog_tree.heading("Status", text="Status", anchor=CENTER)
-        analog_tree.heading("Desc", text="Desc", anchor=CENTER)
-        analog_tree.heading("Code", text="Code", anchor=CENTER)
-        analog_tree.place(x=10, y=100)
-        
-        
+        reload_widget_tree()
     
 app = Application()
     
