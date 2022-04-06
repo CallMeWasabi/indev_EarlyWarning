@@ -2,6 +2,10 @@ from socket import AI_PASSIVE
 from tkinter import *
 from tkinter import ttk
 from DataProvider import *
+from matplotlib import pyplot as plt
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
+
+
 
 class Application:
     
@@ -15,8 +19,8 @@ class Application:
             write_log("a")
         except FileNotFoundError:
             write_log("w")
-        self.provider = Provider()
         self.setting = Setting()
+        self.provider = Provider()
         
         window = Tk()
         window.title("EarlyWarning")
@@ -40,8 +44,7 @@ class Application:
         self.frame_page1_widget = LabelFrame(self.frame_page1)
         self.frame_page1_widget.pack(fill="both", expand=1, padx=10, pady=10)
         self.renderWidget_page1()
-        
-        
+        self.renderWidget_page2()
         
         window.mainloop()
 
@@ -86,7 +89,6 @@ class Application:
             button_temperature.config(text=dict_data["temperature"])
             button_humidity.config(text=dict_data["humidity"])
             button_date.after(5000, reload_widget_button)
-            print(len(self.provider.list_show_tree))
             
         
         label_date = Label(self.frame_page1_widget, text="Date", width=15, font=("Ubuntu", 14))
@@ -127,6 +129,107 @@ class Application:
         reload_widget_button()
         reload_widget_tree()
     
+    
+    def renderWidget_page2(self):
+        dict_keyWord = {
+            "quantity_rain_ylabel":"Quantity rain(millimater)",
+            "quantity_rain_title":"Graph quantity rain",
+            "quantity_rain_label":"Quantity rain",
+            "quantity_water_ylabel":"Quantity water(meters)",
+            "quantity_water_title":"Graph quantity water",
+            "quantity_water_label":"Quantity water",
+            "temperature_ylabel":"Temperature(Celsius)",
+            "temperature_title":"Graph temperature",
+            "temperature_label":"Temperature",
+            "humidity_ylabel":"Humidity(percent)",
+            "humidity_title":"Graph humidity",
+            "humidity_label":"Humidity"
+        }
+    
+        def setValueGraph_quantity_rain():
+            nameGraph_var = "quantity_rain"
+            renderGraph(nameGraph_var)
+        
+        def setValueGraph_quantity_water():
+            nameGraph_var = "quantity_water"
+            renderGraph(nameGraph_var)
+            
+        def setValueGraph_temperature():
+            nameGraph_var = "temperature"
+            renderGraph(nameGraph_var)
+            
+        def setValueGraph_humidity():
+            nameGraph_var = "humidity"
+            renderGraph(nameGraph_var)
+            
+        def renderGraph(name_request):
+            
+            def goBack():
+                Button_disable.destroy()
+                labelFrame_graph.destroy()
+                self.renderWidget_page2()
+            
+            def createGraph():
+                graph_data = self.provider.get_graphData()
+                if len(graph_data) == 0:
+                    
+                    def destroy():
+                        label_alert.destroy()
+                    
+                    label_alert = Label(self.frame_page2, text="Don't have data", font=("Ubuntu", 15))
+                    label_alert.pack()
+                    label_alert.after(2000, destroy)
+                
+                elif len(graph_data) > 0:
+                    for i in range(len(graph_data)):
+                        x_data.append(graph_data[i]["time"])
+                        y_data.append(int(graph_data[i][name_request]))
+                
+                    fig = plt.figure(figsize=(10, 6), dpi=100)
+                    plot1 = fig.add_subplot(111)
+                    plot1.plot(x_data, y_data, marker="", color="blue", label=dict_keyWord[f"{name_request}_label"])
+                    plot1.set_xlabel("Time")
+                    plot1.set_ylabel(dict_keyWord[f"{name_request}_ylabel"])
+                    plot1.set_title(dict_keyWord[f"{name_request}_title"])
+                    plot1.set_xticks([graph_data[0]["time"], graph_data[len(graph_data)-1]["time"]])
+                    plot1.legend(loc=2)
+                    plot1.grid()
+                    canv = FigureCanvasTkAgg(fig, master=labelFrame_graph)
+                    canv.draw()
+                    get_widz = canv.get_tk_widget()
+                    get_widz.pack()
+            
+            x_data = []
+            y_data = []
+            
+            
+            Button_graph_quantity_rain.destroy()
+            Button_graph_quantity_water.destroy()
+            Button_graph_quantity_temperature.destroy()
+            Button_graph_quantity_humidity.destroy()
+            Label_read.destroy()
+            
+            
+            Button_disable = Button(self.frame_page2, text="Disable graph", command=goBack)
+            Button_disable.pack(pady=5)
+            labelFrame_graph = LabelFrame(self.frame_page2, text="Graph")
+            labelFrame_graph.pack(fill="both", expand="yes", padx=10, pady=10)
+            
+            createGraph()    
+        
+        Button_graph_quantity_rain = Button(self.frame_page2, text="Show graph quantity rain", command=setValueGraph_quantity_rain)
+        Button_graph_quantity_rain.place(x=200, y=20)
+        Button_graph_quantity_water = Button(self.frame_page2, text="Show graph quantity water", command=setValueGraph_quantity_water)
+        Button_graph_quantity_water.place(x=350, y=20)
+        Button_graph_quantity_temperature = Button(self.frame_page2, text="Show graph temperature", command=setValueGraph_temperature)
+        Button_graph_quantity_temperature.place(x=510, y=20)
+        Button_graph_quantity_humidity = Button(self.frame_page2, text="Show graph humidity", command=setValueGraph_humidity)
+        Button_graph_quantity_humidity.place(x=660, y=20)
+        Label_read = Label(self.frame_page2,text=f"read file {self.setting.TypeFile}", font=("Ubuntu", 14))
+        Label_read.place(x=800, y=500)
+        
+        
+        
 app = Application()
     
         

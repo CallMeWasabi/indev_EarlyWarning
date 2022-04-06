@@ -11,7 +11,7 @@ class Provider:
         self.generate = Generator()
         self.keys_data = ["quantity_rain", "quantity_water", "temperature", "humidity"]
         self.graph_data = []
-        self.historical_data = []
+        self.alarm_historical_data = []
         self.alarm_data = []
         self.iid = 0
         self.list_tree = None
@@ -24,7 +24,6 @@ class Provider:
     
     def get_data(self) -> dict:
         generate_data = self.generate.get_generate_Data()
-        self.ManageHistoricalData(generate_data)
         self.ManageGraphData(generate_data)
         self.list_tree = generate_data
         self.findError()
@@ -39,13 +38,7 @@ class Provider:
         return self.graph_data
     
     def get_historicalData(self):
-        return self.historical_data
-    
-    def ManageListShowTree(self):
-        if len(self.list_show_tree) <= 20:
-            pass
-        elif len(self.list_show_tree) > 20:
-            self.list_show_tree.pop()
+        return self.alarm_historical_data
     
     def findError(self):
         if  len(self.error_point) == 0:
@@ -61,6 +54,7 @@ class Provider:
                         " "
                     ])
                     self.ManageListShowTree()
+                    self.ManageHistoricalData(self.list_show_tree[0])
                     self.error_point.insert(0, key)
                 elif self.list_tree[key] >= self.setting.dict_setting[f"max_{key}"]:
                     self.list_show_tree.insert(0, [
@@ -73,6 +67,7 @@ class Provider:
                         " "
                     ])
                     self.ManageListShowTree()
+                    self.ManageHistoricalData(self.list_show_tree[0])
                     self.error_point.insert(0, key)
             self.set_id()
             
@@ -102,6 +97,7 @@ class Provider:
                         " "
                     ])
                     self.ManageListShowTree()
+                    self.ManageHistoricalData(self.list_show_tree[0])
                     self.error_point.insert(0, key)
                 elif self.list_tree[key] >= self.setting.dict_setting[f"max_{key}"]:
                     self.list_show_tree.insert(0, [
@@ -114,6 +110,7 @@ class Provider:
                         " "
                     ])
                     self.ManageListShowTree()
+                    self.ManageHistoricalData(self.list_show_tree[0])
                     self.error_point.insert(0, key)
             self.set_id()
             
@@ -123,6 +120,12 @@ class Provider:
             self.list_show_tree[i][2] = id
             id += 1
 
+    def ManageListShowTree(self):
+        if len(self.list_show_tree) <= 20:
+            pass
+        elif len(self.list_show_tree) > 20:
+            self.list_show_tree.pop()
+    
     def ManageGraphData(self, generate_data):
         if len(self.graph_data) < 8640:
             self.graph_data.append(generate_data)
@@ -131,16 +134,17 @@ class Provider:
             self.graph_data.append(generate_data)
     
     def ManageHistoricalData(self, generate_data):
-        if len(self.historical_data) < 10000:
-            self.historical_data.insert(0, generate_data)
+        if len(self.alarm_historical_data) < 10000:
+            self.alarm_historical_data.insert(0, generate_data)
         
-        elif len(self.historical_data) >= 10000:
+        elif len(self.alarm_historical_data) >= 10000:
             current_time = datetime.datetime.now()
             filename = f"Historical_data/alarm_log-{current_time.day}-{current_time.month}-{current_time.year}{self.config_setting.get_TypeFileSave()[0:len(self.config_setting.get_TypeFileSave())-1]}"
-            print(filename)
-            dataframe_historical = pd.DataFrame(self.historical_data[50:10000])
+            for i in range(len(self.alarm_historical_data)):
+                self.alarm_historical_data[i][2] = self.get_iid()
+            dataframe_historical = pd.DataFrame(self.alarm_historical_data[50:10000])
             dataframe_historical.set_index("id", inplace=True)
-            self.historical_data = self.historical_data[0:50]
+            self.alarm_historical_data = self.alarm_historical_data[0:50]
             if self.config_setting.get_TypeFileSave() == ".csv\n":
                 dataframe_historical.to_csv(filename)
 

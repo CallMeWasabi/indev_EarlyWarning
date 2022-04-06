@@ -12,7 +12,7 @@ class Setting:
         self.id_historical = None
         self.keys_setting = ["type_file",
                              "type_file_save",
-                             "id_historical",
+                             "id_historical_alarm",
                              "min_quantity_rain",
                              "max_quantity_rain",
                              "min_quantity_water",
@@ -45,7 +45,7 @@ class Setting:
                     elif key == "type_file_save":
                         self.TypeFileSave = list_value[i]
                         self.dict_setting[key] = list_value[i]
-                    elif key == "id_historical":
+                    elif key == "id_historical_alarm":
                         self.id_historical = list_value[i]
                         self.dict_setting[key] = list_value[i]
                     else:
@@ -80,7 +80,7 @@ class Setting:
                         elif key == "type_file_save":
                             self.TypeFileSave = value
                             self.dict_setting[key] = value
-                        elif key == "id_historical":
+                        elif key == "id_historical_alarm":
                             self.id_historical = value
                             self.dict_setting[key] = value
                         else:
@@ -103,6 +103,6 @@ class Setting:
     def get_id_historical(self):
         value = self.id_historical
         self.id_historical = str(int(self.id_historical) + 1)
-        self.dict_setting["id_historical"] = self.id_historical + "\n"
+        self.dict_setting["id_historical_alarm"] = self.id_historical + "\n"
         self.set_ConfigAndWriteFile()
         return value

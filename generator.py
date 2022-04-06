@@ -15,7 +15,7 @@ class Generator:
     def get_generate_Data(self) -> dict:
         current_time = datetime.datetime.now()
         dict_child = {}
-        dict_child["id"] = str(self.config_setting.get_id_historical())
+        dict_child["id"] = " "
         dict_child["date"] = f"{current_time.day}/{current_time.month}/{current_time.year}"
         dict_child["time"] = f"{current_time.hour}:{current_time.minute}:{current_time.second}"
         dict_child["quantity_rain"] = str(random.randint(-20, 140))

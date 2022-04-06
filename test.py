@@ -1,3 +1,4 @@
-
-with open("log/log_startapp", "a") as f:
-    f.write("Hello")
+a = "4"
+b = "5"
+if a > b:
+    print("Hello World")
