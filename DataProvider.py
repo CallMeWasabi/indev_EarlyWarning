@@ -15,8 +15,8 @@ class Provider:
         self.alarm_data = []
         self.tree_station = []
         self.iid = 0
-        self.list_tree = None
-        self.list_show_tree = []
+        self.tree_analog = None
+        self.show_tree_analog = []
         self.error_point = []
         self.iid_station = 0
         
@@ -27,7 +27,7 @@ class Provider:
     def get_data(self) -> dict:
         generate_data = self.generate.get_generate_Data()
         self.ManageGraphData(generate_data)
-        self.list_tree = generate_data
+        self.tree_analog = generate_data
         self.findError()
         if generate_data["hardware_fail"] == "1":
             self.ManageErrorStation(generate_data)
@@ -77,10 +77,10 @@ class Provider:
     def findError(self):
         if  len(self.error_point) == 0:
             for key in self.keys_data:
-                if self.list_tree[key] <= self.setting.dict_setting[f"min_{key}"]:
-                    self.list_show_tree.insert(0, [
-                        self.list_tree["date"],
-                        self.list_tree["time"],
+                if self.tree_analog[key] <= self.setting.dict_setting[f"min_{key}"]:
+                    self.show_tree_analog.insert(0, [
+                        self.tree_analog["date"],
+                        self.tree_analog["time"],
                         " ",
                         key,
                         "Lower the limit",
@@ -88,12 +88,12 @@ class Provider:
                         " "
                     ])
                     self.ManageListShowTree()
-                    self.ManageHistoricalData(self.list_show_tree[0])
+                    self.ManageHistoricalData(self.show_tree_analog[0])
                     self.error_point.insert(0, key)
-                elif self.list_tree[key] >= self.setting.dict_setting[f"max_{key}"]:
-                    self.list_show_tree.insert(0, [
-                        self.list_tree["date"],
-                        self.list_tree["time"],
+                elif self.tree_analog[key] >= self.setting.dict_setting[f"max_{key}"]:
+                    self.show_tree_analog.insert(0, [
+                        self.tree_analog["date"],
+                        self.tree_analog["time"],
                         " ",
                         key,
                         "Higher the limit",
@@ -101,16 +101,16 @@ class Provider:
                         " "
                     ])
                     self.ManageListShowTree()
-                    self.ManageHistoricalData(self.list_show_tree[0])
+                    self.ManageHistoricalData(self.show_tree_analog[0])
                     self.error_point.insert(0, key)
             self.set_id()
             
         elif len(self.error_point) != 0:
             for i in range(len(self.error_point)):
-                if self.list_tree[self.error_point[i]] > self.setting.dict_setting[f"min_{self.error_point[i]}"] and self.list_tree[self.error_point[i]] < self.setting.dict_setting[f"max_{self.error_point[i]}"]:
-                    self.list_show_tree.insert(0, [
-                        self.list_tree["date"],
-                        self.list_tree["time"],
+                if self.tree_analog[self.error_point[i]] > self.setting.dict_setting[f"min_{self.error_point[i]}"] and self.tree_analog[self.error_point[i]] < self.setting.dict_setting[f"max_{self.error_point[i]}"]:
+                    self.show_tree_analog.insert(0, [
+                        self.tree_analog["date"],
+                        self.tree_analog["time"],
                         " ",
                         self.error_point[i],
                         "Normal",
@@ -120,10 +120,10 @@ class Provider:
                     self.ManageListShowTree()
             self.error_point = []
             for key in self.keys_data:
-                if self.list_tree[key] <= self.setting.dict_setting[f"min_{key}"]:
-                    self.list_show_tree.insert(0, [
-                        self.list_tree["date"],
-                        self.list_tree["time"],
+                if self.tree_analog[key] <= self.setting.dict_setting[f"min_{key}"]:
+                    self.show_tree_analog.insert(0, [
+                        self.tree_analog["date"],
+                        self.tree_analog["time"],
                         " ",
                         key,
                         "Lower the limit",
@@ -131,12 +131,12 @@ class Provider:
                         " "
                     ])
                     self.ManageListShowTree()
-                    self.ManageHistoricalData(self.list_show_tree[0])
+                    self.ManageHistoricalData(self.show_tree_analog[0])
                     self.error_point.insert(0, key)
-                elif self.list_tree[key] >= self.setting.dict_setting[f"max_{key}"]:
-                    self.list_show_tree.insert(0, [
-                        self.list_tree["date"],
-                        self.list_tree["time"],
+                elif self.tree_analog[key] >= self.setting.dict_setting[f"max_{key}"]:
+                    self.show_tree_analog.insert(0, [
+                        self.tree_analog["date"],
+                        self.tree_analog["time"],
                         " ",
                         key,
                         "Higher the limit",
@@ -144,19 +144,19 @@ class Provider:
                         " "
                     ])
                     self.ManageListShowTree()
-                    self.ManageHistoricalData(self.list_show_tree[0])
+                    self.ManageHistoricalData(self.show_tree_analog[0])
                     self.error_point.insert(0, key)
             self.set_id()
             
     def set_id(self):
         id = 1
-        for i in range(len(self.list_show_tree)):
-            self.list_show_tree[i][2] = id
+        for i in range(len(self.show_tree_analog)):
+            self.show_tree_analog[i][2] = id
             id += 1
 
     def ManageListShowTree(self):
-        if len(self.list_show_tree) > 20:
-            self.list_show_tree.pop()
+        if len(self.show_tree_analog) > 20:
+            self.show_tree_analog.pop()
     
     def ManageGraphData(self, generate_data):
         if len(self.graph_data) < 8640:

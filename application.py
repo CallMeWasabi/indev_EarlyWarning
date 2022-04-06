@@ -84,8 +84,8 @@ class Application:
             analog_tree.place(x=10, y=100)
             
             self.provider.iid = 0
-            for i in range(0, len(self.provider.list_show_tree)):
-                analog_tree.insert(parent="", index="end", iid=self.provider.get_iid(), value=(self.provider.list_show_tree[i]))
+            for i in range(0, len(self.provider.show_tree_analog)):
+                analog_tree.insert(parent="", index="end", iid=self.provider.get_iid(), value=(self.provider.show_tree_analog[i]))
 
             analog_tree.after(5000, clear_tree_analog)
         
@@ -271,7 +271,7 @@ class Application:
             self.provider.iid_station = 0
             list_data = self.provider.get_tree_station()
             for i in range(0, len(list_data)):
-                station_tree.insert(parent="", index="end", iid=self.provider.get_iid(), value=(list_data[i]))
+                station_tree.insert(parent="", index="end", iid=self.provider.get_iid_station(), value=(list_data[i]))
             
             station_tree.after(5000, clear_tree_station)
             
