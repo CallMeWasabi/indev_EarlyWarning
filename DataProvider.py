@@ -179,6 +179,3 @@ class Provider:
             self.alarm_historical_data = self.alarm_historical_data[0:50]
             if self.config_setting.get_TypeFileSave() == ".csv\n":
                 dataframe_historical.to_csv(filename)
-
-    def create_tree(self):
-        pass
