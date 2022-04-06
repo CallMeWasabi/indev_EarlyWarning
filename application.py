@@ -1,7 +1,6 @@
 from socket import AI_PASSIVE
 from tkinter import *
 from tkinter import ttk
-
 from pyparsing import col
 from DataProvider import *
 from matplotlib import pyplot as plt
@@ -54,42 +53,41 @@ class Application:
 
     def renderWidget_page1(self) -> None:
          
-        def clear_tree_analog():
-                self.analog_tree.destroy()
-                reload_widget_tree() 
-         
-        
         def reload_widget_tree():
             
-            self.analog_tree = ttk.Treeview(self.frame_page1_widget, height=20)
-            self.analog_tree["column"] = ("Date", "Time", "Id", "Name", "Status", "Desc", "Code")
+            def clear_tree_analog():
+                analog_tree.destroy()
+                reload_widget_tree() 
             
-            self.analog_tree.column("#0", width=20, minwidth=25)
-            self.analog_tree.column("Date", anchor=CENTER, width=120)
-            self.analog_tree.column("Time", anchor=CENTER, width=150)
-            self.analog_tree.column("Id", anchor=W, width=50)
-            self.analog_tree.column("Name", anchor=W, width=185)
-            self.analog_tree.column("Status", anchor=W, width=150)
-            self.analog_tree.column("Desc", anchor=CENTER, width=150)
-            self.analog_tree.column("Code", anchor=CENTER, width=150)
+            analog_tree = ttk.Treeview(self.frame_page1_widget, height=20)
+            analog_tree["column"] = ("Date", "Time", "Id", "Name", "Status", "Desc", "Code")
             
-            self.analog_tree.heading("#0", text="", anchor=CENTER)
-            self.analog_tree.heading("Date", text="Date", anchor=CENTER)
-            self.analog_tree.heading("Time", text="Time", anchor=CENTER)
-            self.analog_tree.heading("Name", text="Name", anchor=CENTER)
-            self.analog_tree.heading("Id", text="Id", anchor=CENTER)
-            self.analog_tree.heading("Name", text="Name", anchor=CENTER)
-            self.analog_tree.heading("Status", text="Status", anchor=CENTER)
-            self.analog_tree.heading("Desc", text="Desc", anchor=CENTER)
-            self.analog_tree.heading("Code", text="Code", anchor=CENTER)
-            self.analog_tree.place(x=10, y=100)
+            analog_tree.column("#0", width=20, minwidth=25)
+            analog_tree.column("Date", anchor=CENTER, width=120)
+            analog_tree.column("Time", anchor=CENTER, width=150)
+            analog_tree.column("Id", anchor=W, width=50)
+            analog_tree.column("Name", anchor=W, width=185)
+            analog_tree.column("Status", anchor=W, width=150)
+            analog_tree.column("Desc", anchor=CENTER, width=150)
+            analog_tree.column("Code", anchor=CENTER, width=150)
+            
+            analog_tree.heading("#0", text="", anchor=CENTER)
+            analog_tree.heading("Date", text="Date", anchor=CENTER)
+            analog_tree.heading("Time", text="Time", anchor=CENTER)
+            analog_tree.heading("Name", text="Name", anchor=CENTER)
+            analog_tree.heading("Id", text="Id", anchor=CENTER)
+            analog_tree.heading("Name", text="Name", anchor=CENTER)
+            analog_tree.heading("Status", text="Status", anchor=CENTER)
+            analog_tree.heading("Desc", text="Desc", anchor=CENTER)
+            analog_tree.heading("Code", text="Code", anchor=CENTER)
+            analog_tree.place(x=10, y=100)
             
             self.provider.iid = 0
             for i in range(0, len(self.provider.show_tree_analog)):
-                self.analog_tree.insert(parent="", index="end", iid=self.provider.get_iid(), value=(self.provider.show_tree_analog[i]))
+                analog_tree.insert(parent="", index="end", iid=self.provider.get_iid(), value=(self.provider.show_tree_analog[i]))
 
-            self.analog_tree.after(5000, clear_tree_analog)
-        
+            analog_tree.after(2000, reload_widget_tree)
+            
         
         def reload_widget_button():
             dict_data = self.provider.get_data()
@@ -99,7 +97,7 @@ class Application:
             button_quantity_water.config(text=dict_data["quantity_water"])
             button_temperature.config(text=dict_data["temperature"])
             button_humidity.config(text=dict_data["humidity"])
-            button_date.after(5000, reload_widget_button)
+            button_date.after(2000, reload_widget_button)
             
         
         label_date = Label(self.frame_page1_widget, text="Date", width=15, font=("Ubuntu", 14))
@@ -247,7 +245,7 @@ class Application:
                 station_tree.destroy()
                 reload_widget_station()
             
-            station_tree = ttk.Treeview(self.frame_page3)
+            station_tree = ttk.Treeview(self.frame_page3, height=26)
             station_tree["column"] = ("Id", "Date", "Time", "Status", "Station name", "Code", "Desc")
             
             station_tree.column("#0", width=20, minwidth=25)
@@ -256,8 +254,8 @@ class Application:
             station_tree.column("Time", anchor=CENTER, width=120)
             station_tree.column("Status", anchor=W, width=150)
             station_tree.column("Station name", anchor=W, width=180)
-            station_tree.column("Code", anchor=W, width=100)
-            station_tree.column("Desc", anchor=W, width=100)
+            station_tree.column("Code", anchor=W, width=160)
+            station_tree.column("Desc", anchor=W, width=200)
             
             station_tree.heading("#0", text="", anchor=CENTER)
             station_tree.heading("Id", text="Id",anchor=CENTER)
@@ -267,14 +265,14 @@ class Application:
             station_tree.heading("Station name", text="Station name",anchor=CENTER)
             station_tree.heading("Code", text="Code",anchor=CENTER)
             station_tree.heading("Desc", text="Desc",anchor=CENTER)
-            station_tree.pack(fill="both", expand=1, padx=10, pady=10)
+            station_tree.place(x=10, y=10)
 
             self.provider.iid_station = 0
             list_data = self.provider.get_tree_station()
             for i in range(0, len(list_data)):
                 station_tree.insert(parent="", index="end", iid=self.provider.get_iid_station(), value=(list_data[i]))
             
-            station_tree.after(5000, clear_tree_station)
+            station_tree.after(2000, reload_widget_station)
             
         reload_widget_station()
         
