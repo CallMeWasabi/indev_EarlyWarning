@@ -1,6 +1,8 @@
 from socket import AI_PASSIVE
 from tkinter import *
 from tkinter import ttk
+
+from pyparsing import col
 from DataProvider import *
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
@@ -45,6 +47,8 @@ class Application:
         self.frame_page1_widget.pack(fill="both", expand=1, padx=10, pady=10)
         self.renderWidget_page1()
         self.renderWidget_page2()
+        self.renderWidget_page3()
+        
         
         window.mainloop()
 
@@ -228,7 +232,39 @@ class Application:
         Label_read = Label(self.frame_page2,text=f"read file {self.setting.TypeFile}", font=("Ubuntu", 14))
         Label_read.place(x=800, y=500)
         
+    def renderWidget_page3(self):
         
+        def reload_widget_station():
+            station_tree = ttk.Treeview(self.frame_page3)
+            station_tree["column"] = ("Id", "Date", "Time", "Status", "Station name", "Code", "Desc")
+            
+            station_tree.column("#0", width=20, minwidth=25)
+            station_tree.column("Id", anchor=CENTER, width=50)
+            station_tree.column("Date", anchor=CENTER, width=120)
+            station_tree.column("Time", anchor=CENTER, width=120)
+            station_tree.column("Status", anchor=W, width=150)
+            station_tree.column("Station name", anchor=W, width=180)
+            station_tree.column("Code", anchor=W, width=100)
+            station_tree.column("Desc", anchor=W, width=100)
+            
+            station_tree.heading("#0", text="", anchor=CENTER)
+            station_tree.heading("Id", text="Id",anchor=CENTER)
+            station_tree.heading("Date", text="Date",anchor=CENTER)
+            station_tree.heading("Time", text="Time",anchor=CENTER)
+            station_tree.heading("Status", text="Status",anchor=CENTER)
+            station_tree.heading("Station name", text="Station name",anchor=CENTER)
+            station_tree.heading("Code", text="Code",anchor=CENTER)
+            station_tree.heading("Desc", text="Desc",anchor=CENTER)
+            station_tree.pack(fill="both", expand=1, padx=10, pady=10)
+
+            self.provider.iid_station = 0
+            list_data = self.provider.get_tree_station()
+            for i in range(0, len(list_data)):
+                station_tree.insert(parent="", index="end", iid=self.provider.get_iid(), value=(list_data[i]))
+            
+            station_tree.after(5000, reload_widget_station)
+            
+        reload_widget_station()
         
 app = Application()
     

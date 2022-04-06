@@ -13,10 +13,12 @@ class Provider:
         self.graph_data = []
         self.alarm_historical_data = []
         self.alarm_data = []
+        self.tree_station = []
         self.iid = 0
         self.list_tree = None
         self.list_show_tree = []
         self.error_point = []
+        self.iid_station = 0
         
     def get_time(self):
         current_time = datetime.datetime.now()
@@ -27,6 +29,9 @@ class Provider:
         self.ManageGraphData(generate_data)
         self.list_tree = generate_data
         self.findError()
+        if generate_data["hardware_fail"] == "1":
+            self.ManageErrorStation(generate_data)
+
         return generate_data    
     
     def get_iid(self):
@@ -34,11 +39,40 @@ class Provider:
         self.iid += 1
         return value
     
+    def get_iid_station(self):
+        value = self.iid_station
+        self.iid_station += 1
+        return value
+    
     def get_graphData(self):
         return self.graph_data
     
     def get_historicalData(self):
         return self.alarm_historical_data
+    
+    def get_tree_station(self):
+        
+        def id_stamp():
+            for i in range(len(self.tree_station)):
+                self.tree_station[i][0] = str(i+1)
+        id_stamp()
+        return self.tree_station
+    
+    def ManageErrorStation(self, generate_data):
+        list_pre = []
+        list_pre.append(" ")
+        list_pre.append(generate_data["date"])
+        list_pre.append(generate_data["time"])
+        list_pre.append("hardware fail")
+        list_pre.append(" ")
+        list_pre.append(" ")
+        list_pre.append(" ")
+        if len(self.tree_station) > 20:
+            self.tree_station.pop()
+        else:
+            self.tree_station.insert(0, list_pre)
+        
+        
     
     def findError(self):
         if  len(self.error_point) == 0:
@@ -121,9 +155,7 @@ class Provider:
             id += 1
 
     def ManageListShowTree(self):
-        if len(self.list_show_tree) <= 20:
-            pass
-        elif len(self.list_show_tree) > 20:
+        if len(self.list_show_tree) > 20:
             self.list_show_tree.pop()
     
     def ManageGraphData(self, generate_data):
