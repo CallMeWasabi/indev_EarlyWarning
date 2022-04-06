@@ -53,8 +53,13 @@ class Application:
         window.mainloop()
 
     def renderWidget_page1(self) -> None:
-        
+         
         def reload_widget_tree():
+            
+            def clear_tree_analog():
+                analog_tree.destroy()
+                reload_widget_tree()
+            
             analog_tree = ttk.Treeview(self.frame_page1_widget, height=20)
             analog_tree["column"] = ("Date", "Time", "Id", "Name", "Status", "Desc", "Code")
             
@@ -82,8 +87,9 @@ class Application:
             for i in range(0, len(self.provider.list_show_tree)):
                 analog_tree.insert(parent="", index="end", iid=self.provider.get_iid(), value=(self.provider.list_show_tree[i]))
 
-            analog_tree.after(5000, reload_widget_tree)
-            
+            analog_tree.after(5000, clear_tree_analog)
+        
+        
         def reload_widget_button():
             dict_data = self.provider.get_data()
             button_date.config(text=dict_data["date"])
@@ -235,6 +241,11 @@ class Application:
     def renderWidget_page3(self):
         
         def reload_widget_station():
+            
+            def clear_tree_station():
+                station_tree.destroy()
+                reload_widget_station()
+            
             station_tree = ttk.Treeview(self.frame_page3)
             station_tree["column"] = ("Id", "Date", "Time", "Status", "Station name", "Code", "Desc")
             
@@ -262,7 +273,7 @@ class Application:
             for i in range(0, len(list_data)):
                 station_tree.insert(parent="", index="end", iid=self.provider.get_iid(), value=(list_data[i]))
             
-            station_tree.after(5000, reload_widget_station)
+            station_tree.after(5000, clear_tree_station)
             
         reload_widget_station()
         
