@@ -57,7 +57,7 @@ class Application:
             
             def clear_tree_analog():
                 analog_tree.destroy()
-                reload_widget_tree() 
+                reload_widget_tree()
             
             analog_tree = ttk.Treeview(self.frame_page1_widget, height=20)
             analog_tree["column"] = ("Date", "Time", "Id", "Name", "Status", "Desc", "Code")
@@ -86,7 +86,8 @@ class Application:
             for i in range(0, len(self.provider.show_tree_analog)):
                 analog_tree.insert(parent="", index="end", iid=self.provider.get_iid(), value=(self.provider.show_tree_analog[i]))
 
-            analog_tree.after(2000, reload_widget_tree)
+            analog_tree.after(5000, clear_tree_analog)
+            
             
         
         def reload_widget_button():
@@ -97,7 +98,7 @@ class Application:
             button_quantity_water.config(text=dict_data["quantity_water"])
             button_temperature.config(text=dict_data["temperature"])
             button_humidity.config(text=dict_data["humidity"])
-            button_date.after(2000, reload_widget_button)
+            button_date.after(5000, reload_widget_button)
             
         
         label_date = Label(self.frame_page1_widget, text="Date", width=15, font=("Ubuntu", 14))
@@ -272,7 +273,7 @@ class Application:
             for i in range(0, len(list_data)):
                 station_tree.insert(parent="", index="end", iid=self.provider.get_iid_station(), value=(list_data[i]))
             
-            station_tree.after(2000, reload_widget_station)
+            station_tree.after(2000, clear_tree_station)
             
         reload_widget_station()
         
