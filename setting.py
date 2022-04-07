@@ -67,7 +67,15 @@ class Setting:
             os.mkdir(parent_dir+"/EarlyWarningSetting")
             self.set_SettingToDefault()
     
-
+    def saveLogSetting(self, list_info):
+        try:
+            with open("log/log_setting", "a") as f:
+                f.writelines(list_info)
+        except FileNotFoundError:
+            with open("log/log_setting", "w") as f:
+                f.writelines(list_info)
+    
+    
     def load_appSetting(self):
         try:
             with open(self.PathAppSetting, "r") as f:
@@ -106,3 +114,10 @@ class Setting:
         self.dict_setting["id_historical_alarm"] = self.id_historical + "\n"
         self.set_ConfigAndWriteFile()
         return value
+
+    def set_dict_setting(self, dict_new_setting):
+        for key in self.keys_setting:
+            if key != "id_historical_alarm":
+                self.dict_setting[key] = dict_new_setting[key]
+            elif key == "id_historical_alarm":
+                self.dict_setting[key] = self.get_id_historical()

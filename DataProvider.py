@@ -171,11 +171,11 @@ class Provider:
         
         elif len(self.alarm_historical_data) >= 10000:
             current_time = datetime.datetime.now()
-            filename = f"Historical_data/alarm_log-{current_time.day}-{current_time.month}-{current_time.year}{self.config_setting.get_TypeFileSave()[0:len(self.config_setting.get_TypeFileSave())-1]}"
+            filename = f"Historical_data/alarm_log-{current_time.day}-{current_time.month}-{current_time.year}{self.setting.get_TypeFileSave()[0:len(self.setting.get_TypeFileSave())-1]}"
             for i in range(len(self.alarm_historical_data)):
                 self.alarm_historical_data[i][2] = self.get_iid()
             dataframe_historical = pd.DataFrame(self.alarm_historical_data[50:10000])
             dataframe_historical.set_index("id", inplace=True)
             self.alarm_historical_data = self.alarm_historical_data[0:50]
-            if self.config_setting.get_TypeFileSave() == ".csv\n":
+            if self.setting.get_TypeFileSave() == ".csv\n":
                 dataframe_historical.to_csv(filename)

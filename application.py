@@ -1,11 +1,13 @@
+from email.mime import message
 from socket import AI_PASSIVE
 from tkinter import *
 from tkinter import ttk
+from winsound import MessageBeep
 from pyparsing import col
 from DataProvider import *
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
-
+from tkinter import messagebox
 
 
 class Application:
@@ -24,19 +26,21 @@ class Application:
         self.provider = Provider()
         self.cout_tree_analog = 0
         
-        window = Tk()
-        window.title("EarlyWarning")
-        window.iconbitmap("img\\rain.ico")
-        window.geometry("1024x600")
-        window.resizable(False, False)
+        self.window = Tk()
+        self.window.title("EarlyWarning")
+        self.window.iconbitmap("img\\rain.ico")
+        self.window.geometry("1024x600")
+        self.window.resizable(False, False)
         
-        my_notebook = ttk.Notebook(window)
+        my_notebook = ttk.Notebook(self.window)
         my_notebook.pack()
         
         self.frame_page1 = Frame(my_notebook, width=1024, height=600)
         self.frame_page2 = Frame(my_notebook, width=1024, height=600)
         self.frame_page3 = Frame(my_notebook, width=1024, height=600)
         self.frame_setting = Frame(my_notebook, width=1024, height=600)
+        
+        self.frame_page1.bind("FocusIn", self.Defocus)
         
         my_notebook.add(self.frame_page1, text="Show Data")
         my_notebook.add(self.frame_page2, text="Historical Data")
@@ -50,8 +54,11 @@ class Application:
         self.renderWidget_page3()
         self.renderWidget_setting()
         
-        window.mainloop()
+        self.window.mainloop()
 
+    def Defocus(self, event):
+        event.widget.master.focus_set()
+    
     def renderWidget_page1(self) -> None:
          
         def reload_widget_tree():
@@ -91,6 +98,13 @@ class Application:
         button_quantity_water = Button(self.frame_page1_widget, text="", font=("Ubuntu", 14), width=15)
         button_temperature = Button(self.frame_page1_widget, text="", font=("Ubuntu", 14), width=15)
         button_humidity = Button(self.frame_page1_widget, text="", font=("Ubuntu", 14), width=15)
+        
+        button_date.bind("<FocusIn>", self.Defocus)
+        button_time.bind("<FocusIn>", self.Defocus)
+        button_quantity_rain.bind("<FocusIn>", self.Defocus)
+        button_quantity_water.bind("<FocusIn>", self.Defocus)
+        button_temperature.bind("<FocusIn>", self.Defocus)
+        button_humidity.bind("<FocusIn>", self.Defocus)
         
         button_date.grid(row=1, column=0, pady=10)
         button_time.grid(row=1, column=1, pady=10)
@@ -225,12 +239,16 @@ class Application:
             createGraph()    
         
         Button_graph_quantity_rain = Button(self.frame_page2, text="Show graph quantity rain", command=setValueGraph_quantity_rain)
+        Button_graph_quantity_rain.bind("<FocusIn>", self.Defocus)
         Button_graph_quantity_rain.place(x=200, y=20)
         Button_graph_quantity_water = Button(self.frame_page2, text="Show graph quantity water", command=setValueGraph_quantity_water)
+        Button_graph_quantity_water.bind("<FocusIn>", self.Defocus)
         Button_graph_quantity_water.place(x=350, y=20)
         Button_graph_quantity_temperature = Button(self.frame_page2, text="Show graph temperature", command=setValueGraph_temperature)
+        Button_graph_quantity_temperature.bind("<FocusIn>", self.Defocus)
         Button_graph_quantity_temperature.place(x=510, y=20)
         Button_graph_quantity_humidity = Button(self.frame_page2, text="Show graph humidity", command=setValueGraph_humidity)
+        Button_graph_quantity_humidity.bind("<FocusIn>", self.Defocus)
         Button_graph_quantity_humidity.place(x=660, y=20)
         Label_read = Label(self.frame_page2,text=f"read file {self.setting.TypeFile}", font=("Ubuntu", 14))
         Label_read.place(x=800, y=500)
@@ -274,8 +292,145 @@ class Application:
         
     def renderWidget_setting(self):
         
-        label_typefile = Label(self.frame_setting, text="Typefile")
+        # variable
+        var_typefile = StringVar()
+        var_typefile_save = StringVar()
+        var_min_quantity_rain = StringVar()
+        var_max_quantity_rain = StringVar()
+        var_min_quantity_water = StringVar()
+        var_max_quantity_water = StringVar()
+        var_min_temperature = StringVar()
+        var_max_temperature = StringVar()
+        var_min_humidity = StringVar()
+        var_max_humidity = StringVar()
+        
+        def message_confirm():
+            
+            def get_log_setting(dict_var_setting):
+                list_log_setting = []
+                current_time = self.provider.get_time()
+                list_log_setting.append(f"Change Setting Date : {current_time.day}/{current_time.month}/{current_time.year} | Time : {current_time.hour}:{current_time.minute}:{current_time.second} \n Info : \n")
+                for i in self.setting.keys_setting:
+                    if i != "id_historical_alarm":
+                        list_log_setting.append(f"          {i} : {self.setting.dict_setting[i]} change to -> {dict_var_setting[i]} \n")
+            
+            
+            response_message = messagebox.askyesno(title="Confirm", message="Confirm change settings ?")
+            if response_message == 1:
+                dict_var_setting = {}
+                var_typefile = cmb_typefile.get()
+                var_typefile_save = cmb_typefile_save.get()
+                var_min_quantity_rain = entry_min_quantity_rain.get()
+                var_max_quantity_rain = entry_max_quantity_rain.get()
+                var_min_quantity_water = entry_min_quantity_water.get()
+                var_max_quantity_water = entry_max_quantity_water.get()
+                var_min_temperature = entry_min_temperature.get()
+                var_max_temperature = entry_max_temperature.get()
+                var_min_humidity = entry_min_humidity.get()
+                var_max_humidity = entry_max_humidity.get()
+                
+                dict_var_setting["type_file"] = var_typefile
+                dict_var_setting["type_file_save"] = var_typefile_save
+                dict_var_setting["min_quantity_rain"] = var_min_quantity_rain
+                dict_var_setting["max_quantity_rain"] = var_max_quantity_rain
+                dict_var_setting["min_quantity_water"] = var_min_quantity_water
+                dict_var_setting["max_quantity_water"] = var_max_quantity_water
+                dict_var_setting["min_temperature"] = var_min_temperature
+                dict_var_setting["max_temperature"] = var_max_temperature
+                dict_var_setting["min_humidity"] = var_min_humidity
+                dict_var_setting["max_humidity"] = var_max_humidity
+                
+                get_log_setting(dict_var_setting)
+        
+                try:
+                    with open("EarlyWarningSetting/save_preset", "w") as f:
+                        for key in self.provider.keys_data:
+                            if key != "id_historical_alarm":
+                                f.write(f"{key}={dict_var_setting[key]}")
+                                f.write("\n")
+                            elif key == "id_historical_alarm":
+                                f.write(f"{key}={self.setting.id_historical}")
+                                f.write("\n")
+                                self.setting.set_dict_setting(dict_var_setting)
+                                
+                except FileNotFoundError:
+                    with open("EarlyWarningSetting/save_preset", "w") as f:
+                        for key in self.provider.keys_data:
+                            if key != "id_historical_alarm":
+                                f.write(f"{key}={dict_var_setting[key]}")
+                                f.write("\n")
+                            elif key == "id_historical_alarm":
+                                f.write(f"{key}={self.setting.id_historical}")
+                                f.write("\n")
+                                self.setting.set_dict_setting(dict_var_setting)
+                                
+                                
+        label_typefile = Label(self.frame_setting, text="Typefile", font=("Ubuntu", 10))
         label_typefile.place(x=20, y=20)
+        list_typefile = [".xml", ".json"]
+        list_typefile_save = [".csv", "json"]
+        cmb_typefile = ttk.Combobox(self.frame_setting, value=list_typefile, width=10)
+        cmb_typefile.current(0)
+        cmb_typefile.bind("<FocusIn>", self.Defocus)
+        cmb_typefile.place(x=80, y=20)
+        label_typefile_save = Label(self.frame_setting, text="Typefile save for alarm log", font=("Ubuntu", 10))
+        label_typefile_save.place(x=20, y=50)
+        cmb_typefile_save = ttk.Combobox(self.frame_setting, values=list_typefile_save, width=10)
+        cmb_typefile_save.current(0)
+        cmb_typefile_save.bind("<FocusIn>", self.Defocus)
+        cmb_typefile_save.place(x=190, y=50)
+        
+        label_min_quantity_rain = Label(self.frame_setting, font=("Ubuntu", 10), text="Min quantity rain")
+        label_max_quantity_rain = Label(self.frame_setting, font=("Ubuntu", 10), text="Max quantity rain")
+        label_min_quantity_water = Label(self.frame_setting, font=("Ubuntu", 10), text="Min quantity water")
+        label_max_quantity_water = Label(self.frame_setting, font=("Ubuntu", 10), text="Max quantity water")
+        
+        entry_min_quantity_rain = Entry(self.frame_setting)
+        entry_max_quantity_rain = Entry(self.frame_setting)
+        entry_min_quantity_water = Entry(self.frame_setting)
+        entry_max_quantity_water = Entry(self.frame_setting)
+        entry_min_quantity_rain.insert()
+        entry_max_quantity_rain.insert()
+        entry_min_quantity_water.insert()
+        entry_max_quantity_water.insert()
+        
+        
+        
+        label_min_quantity_rain.place(x=300, y=20)
+        label_max_quantity_rain.place(x=300, y=50)
+        label_min_quantity_water.place(x=300, y=80)
+        label_max_quantity_water.place(x=300, y=110)
+        
+        entry_min_quantity_rain.place(x=430, y=20)
+        entry_max_quantity_rain.place(x=430, y=50)
+        entry_min_quantity_water.place(x=430, y=80)
+        entry_max_quantity_water.place(x=430, y=110)
+        
+        label_min_temperature = Label(self.frame_setting, font=("Ubuntu", 10), text="Min temperature")
+        label_max_temperature = Label(self.frame_setting, font=("Ubuntu", 10), text="Max temperature")
+        label_min_humidity = Label(self.frame_setting, font=("Ubuntu", 10), text="Min humidity")
+        label_max_humidity = Label(self.frame_setting, font=("Ubuntu", 10), text="Max humidity")
+        
+        entry_min_temperature = Entry(self.frame_setting)
+        entry_max_temperature = Entry(self.frame_setting)
+        entry_min_humidity = Entry(self.frame_setting)
+        entry_max_humidity = Entry(self.frame_setting)
+        
+        label_min_temperature.place(x=580, y=20)
+        label_max_temperature.place(x=580, y=50)
+        label_min_humidity.place(x=580, y=80)
+        label_max_humidity.place(x=580, y=110)
+        
+        entry_min_temperature.place(x=700, y=20)
+        entry_max_temperature.place(x=700, y=50)
+        entry_min_humidity.place(x=700, y=80)
+        entry_max_humidity.place(x=700, y=110)
+        
+
+        
+        
+        button_apply = Button(self.frame_setting, text="Apply", font=("Ubuntu", 12), command=message_confirm)
+        button_apply.pack(anchor="e", side="bottom", padx=20, pady=20)
         
 if __name__ == "__main__":
     app = Application()     
