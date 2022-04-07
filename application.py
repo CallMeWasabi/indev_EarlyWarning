@@ -22,6 +22,7 @@ class Application:
             write_log("w")
         self.setting = Setting()
         self.provider = Provider()
+        self.cout_tree_analog = 0
         
         window = Tk()
         window.title("EarlyWarning")
@@ -55,41 +56,11 @@ class Application:
          
         def reload_widget_tree():
             
-            def clear_tree_analog():
-                analog_tree.destroy()
-                reload_widget_tree()
-            
-            analog_tree = ttk.Treeview(self.frame_page1_widget, height=20)
-            analog_tree["column"] = ("Date", "Time", "Id", "Name", "Status", "Desc", "Code")
-            
-            analog_tree.column("#0", width=20, minwidth=25)
-            analog_tree.column("Date", anchor=CENTER, width=120)
-            analog_tree.column("Time", anchor=CENTER, width=150)
-            analog_tree.column("Id", anchor=W, width=50)
-            analog_tree.column("Name", anchor=W, width=185)
-            analog_tree.column("Status", anchor=W, width=150)
-            analog_tree.column("Desc", anchor=CENTER, width=150)
-            analog_tree.column("Code", anchor=CENTER, width=150)
-            
-            analog_tree.heading("#0", text="", anchor=CENTER)
-            analog_tree.heading("Date", text="Date", anchor=CENTER)
-            analog_tree.heading("Time", text="Time", anchor=CENTER)
-            analog_tree.heading("Name", text="Name", anchor=CENTER)
-            analog_tree.heading("Id", text="Id", anchor=CENTER)
-            analog_tree.heading("Name", text="Name", anchor=CENTER)
-            analog_tree.heading("Status", text="Status", anchor=CENTER)
-            analog_tree.heading("Desc", text="Desc", anchor=CENTER)
-            analog_tree.heading("Code", text="Code", anchor=CENTER)
-            analog_tree.place(x=10, y=100)
-            
-            self.provider.iid = 0
             for i in range(0, len(self.provider.show_tree_analog)):
-                analog_tree.insert(parent="", index="end", iid=self.provider.get_iid(), value=(self.provider.show_tree_analog[i]))
+                analog_tree.item(i, value=(self.provider.show_tree_analog[i]))
+            analog_tree.after(5000, reload_widget_tree)
+            
 
-            analog_tree.after(5000, clear_tree_analog)
-            
-            
-        
         def reload_widget_button():
             dict_data = self.provider.get_data()
             button_date.config(text=dict_data["date"])
@@ -135,6 +106,30 @@ class Application:
         self.frame_page1_widget.grid_columnconfigure(4, weight=1)
         self.frame_page1_widget.grid_columnconfigure(5, weight=1)
         
+        analog_tree = ttk.Treeview(self.frame_page1_widget, height=20)
+        analog_tree["column"] = ("Date", "Time", "Id", "Name", "Status", "Desc", "Code")
+        
+        analog_tree.column("#0", width=20, minwidth=25)
+        analog_tree.column("Date", anchor=CENTER, width=120)
+        analog_tree.column("Time", anchor=CENTER, width=150)
+        analog_tree.column("Id", anchor=W, width=50)
+        analog_tree.column("Name", anchor=W, width=185)
+        analog_tree.column("Status", anchor=W, width=150)
+        analog_tree.column("Desc", anchor=CENTER, width=150)
+        analog_tree.column("Code", anchor=CENTER, width=150)
+        
+        analog_tree.heading("#0", text="", anchor=CENTER)
+        analog_tree.heading("Date", text="Date", anchor=CENTER)
+        analog_tree.heading("Time", text="Time", anchor=CENTER)
+        analog_tree.heading("Name", text="Name", anchor=CENTER)
+        analog_tree.heading("Id", text="Id", anchor=CENTER)
+        analog_tree.heading("Status", text="Status", anchor=CENTER)
+        analog_tree.heading("Desc", text="Desc", anchor=CENTER)
+        analog_tree.heading("Code", text="Code", anchor=CENTER)
+        analog_tree.place(x=10, y=100)
+        
+        for i in range(0, 20):
+            analog_tree.insert("", "end", iid=i, values=(" ", " ", " ", " ", " ", " ", " "))
         
         reload_widget_button()
         reload_widget_tree()
@@ -174,12 +169,19 @@ class Application:
             
         def renderGraph(name_request):
             
-            def goBack():
-                Button_disable.destroy()
-                labelFrame_graph.destroy()
-                self.renderWidget_page2()
-            
             def createGraph():
+                
+                def goBack():
+                    Button_disable.destroy()
+                    get_widz.destroy()
+                    labelFrame_graph.destroy()
+                    self.renderWidget_page2()
+                
+                Button_disable = Button(self.frame_page2, text="Disable graph", command=goBack)
+                Button_disable.pack(pady=5)
+                labelFrame_graph = LabelFrame(self.frame_page2, text="Graph")
+                labelFrame_graph.pack(fill="both", expand="yes", padx=10, pady=10)
+                
                 graph_data = self.provider.get_graphData()
                 if len(graph_data) == 0:
                     
@@ -208,6 +210,7 @@ class Application:
                     canv.draw()
                     get_widz = canv.get_tk_widget()
                     get_widz.pack()
+                    
             
             x_data = []
             y_data = []
@@ -218,12 +221,6 @@ class Application:
             Button_graph_quantity_temperature.destroy()
             Button_graph_quantity_humidity.destroy()
             Label_read.destroy()
-            
-            
-            Button_disable = Button(self.frame_page2, text="Disable graph", command=goBack)
-            Button_disable.pack(pady=5)
-            labelFrame_graph = LabelFrame(self.frame_page2, text="Graph")
-            labelFrame_graph.pack(fill="both", expand="yes", padx=10, pady=10)
             
             createGraph()    
         
@@ -241,40 +238,37 @@ class Application:
     def renderWidget_page3(self):
         
         def reload_widget_station():
-            
-            def clear_tree_station():
-                station_tree.destroy()
-                reload_widget_station()
-            
-            station_tree = ttk.Treeview(self.frame_page3, height=26)
-            station_tree["column"] = ("Id", "Date", "Time", "Status", "Station name", "Code", "Desc")
-            
-            station_tree.column("#0", width=20, minwidth=25)
-            station_tree.column("Id", anchor=CENTER, width=50)
-            station_tree.column("Date", anchor=CENTER, width=120)
-            station_tree.column("Time", anchor=CENTER, width=120)
-            station_tree.column("Status", anchor=W, width=150)
-            station_tree.column("Station name", anchor=W, width=180)
-            station_tree.column("Code", anchor=W, width=160)
-            station_tree.column("Desc", anchor=W, width=200)
-            
-            station_tree.heading("#0", text="", anchor=CENTER)
-            station_tree.heading("Id", text="Id",anchor=CENTER)
-            station_tree.heading("Date", text="Date",anchor=CENTER)
-            station_tree.heading("Time", text="Time",anchor=CENTER)
-            station_tree.heading("Status", text="Status",anchor=CENTER)
-            station_tree.heading("Station name", text="Station name",anchor=CENTER)
-            station_tree.heading("Code", text="Code",anchor=CENTER)
-            station_tree.heading("Desc", text="Desc",anchor=CENTER)
-            station_tree.place(x=10, y=10)
-
-            self.provider.iid_station = 0
             list_data = self.provider.get_tree_station()
             for i in range(0, len(list_data)):
-                station_tree.insert(parent="", index="end", iid=self.provider.get_iid_station(), value=(list_data[i]))
+                station_tree.item(i, value=(list_data[i]))
             
-            station_tree.after(2000, clear_tree_station)
-            
+            station_tree.after(2000, reload_widget_station)
+        
+        station_tree = ttk.Treeview(self.frame_page3, height=26)
+        station_tree["column"] = ("Id", "Date", "Time", "Status", "Station name", "Code", "Desc")
+        
+        station_tree.column("#0", width=20, minwidth=25)
+        station_tree.column("Id", anchor=CENTER, width=50)
+        station_tree.column("Date", anchor=CENTER, width=120)
+        station_tree.column("Time", anchor=CENTER, width=120)
+        station_tree.column("Status", anchor=W, width=150)
+        station_tree.column("Station name", anchor=W, width=180)
+        station_tree.column("Code", anchor=W, width=160)
+        station_tree.column("Desc", anchor=W, width=200)
+        
+        station_tree.heading("#0", text="", anchor=CENTER)
+        station_tree.heading("Id", text="Id",anchor=CENTER)
+        station_tree.heading("Date", text="Date",anchor=CENTER)
+        station_tree.heading("Time", text="Time",anchor=CENTER)
+        station_tree.heading("Status", text="Status",anchor=CENTER)
+        station_tree.heading("Station name", text="Station name",anchor=CENTER)
+        station_tree.heading("Code", text="Code",anchor=CENTER)
+        station_tree.heading("Desc", text="Desc",anchor=CENTER)
+        station_tree.place(x=10, y=10)
+        
+        for i in range(0, 20):
+            station_tree.insert("", "end", iid=i, value=(" ", " ", " ", " ", " ", " ", " "))
+        
         reload_widget_station()
         
         
@@ -283,7 +277,5 @@ class Application:
         label_typefile = Label(self.frame_setting, text="Typefile")
         label_typefile.place(x=20, y=20)
         
-        
-app = Application()
-    
-        
+if __name__ == "__main__":
+    app = Application()     
