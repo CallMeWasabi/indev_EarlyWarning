@@ -1,8 +1,11 @@
+from operator import index
+from matplotlib.font_manager import json_dump
 from generator import *
 import pandas as pd
 import datetime
 from setting import * 
 import time
+import json
 
 class Provider:
     def __init__(self) -> None:
@@ -10,6 +13,7 @@ class Provider:
         self.setting = Setting()
         self.generate = Generator()
         self.keys_data = ["quantity_rain", "quantity_water", "temperature", "humidity"]
+        self.keys_historical = ["id", "date", "time", "quantity_rain", "quantity_water", "temperature", "humidity"]
         self.graph_data = []
         self.alarm_historical_data = []
         self.alarm_data = []
@@ -19,6 +23,8 @@ class Provider:
         self.show_tree_analog = []
         self.error_point = []
         self.iid_station = 0
+        
+        self.LoadHistoricalData()
         
     def get_time(self):
         current_time = datetime.datetime.now()
@@ -67,17 +73,19 @@ class Provider:
         list_pre.append(" ")
         list_pre.append(" ")
         list_pre.append(" ")
-        if len(self.tree_station) > 20:
+        if len(self.tree_station) == 20:
             self.tree_station.pop()
+            self.tree_station.insert(0, list_pre)
         else:
             self.tree_station.insert(0, list_pre)
         
         
     
     def findError(self):
+        self.setting.load_appSetting()
         if  len(self.error_point) == 0:
             for key in self.keys_data:
-                if self.tree_analog[key] <= self.setting.dict_setting[f"min_{key}"]:
+                if int(self.tree_analog[key]) <= int(self.setting.dict_setting[f"min_{key}"]):
                     self.show_tree_analog.insert(0, [
                         self.tree_analog["date"],
                         self.tree_analog["time"],
@@ -90,7 +98,7 @@ class Provider:
                     self.ManageListShowTree()
                     self.ManageHistoricalData(self.show_tree_analog[0])
                     self.error_point.insert(0, key)
-                elif self.tree_analog[key] >= self.setting.dict_setting[f"max_{key}"]:
+                elif int(self.tree_analog[key]) >= int(self.setting.dict_setting[f"max_{key}"]):
                     self.show_tree_analog.insert(0, [
                         self.tree_analog["date"],
                         self.tree_analog["time"],
@@ -107,7 +115,7 @@ class Provider:
             
         elif len(self.error_point) != 0:
             for i in range(len(self.error_point)):
-                if self.tree_analog[self.error_point[i]] > self.setting.dict_setting[f"min_{self.error_point[i]}"] and self.tree_analog[self.error_point[i]] < self.setting.dict_setting[f"max_{self.error_point[i]}"]:
+                if int(self.tree_analog[self.error_point[i]]) > int(self.setting.dict_setting[f"min_{self.error_point[i]}"]) and int(self.tree_analog[self.error_point[i]]) < int(self.setting.dict_setting[f"max_{self.error_point[i]}"]):
                     self.show_tree_analog.insert(0, [
                         self.tree_analog["date"],
                         self.tree_analog["time"],
@@ -120,7 +128,7 @@ class Provider:
                     self.ManageListShowTree()
             self.error_point = []
             for key in self.keys_data:
-                if self.tree_analog[key] <= self.setting.dict_setting[f"min_{key}"]:
+                if int(self.tree_analog[key]) <= int(self.setting.dict_setting[f"min_{key}"]):
                     self.show_tree_analog.insert(0, [
                         self.tree_analog["date"],
                         self.tree_analog["time"],
@@ -133,7 +141,7 @@ class Provider:
                     self.ManageListShowTree()
                     self.ManageHistoricalData(self.show_tree_analog[0])
                     self.error_point.insert(0, key)
-                elif self.tree_analog[key] >= self.setting.dict_setting[f"max_{key}"]:
+                elif int(self.tree_analog[key]) >= int(self.setting.dict_setting[f"max_{key}"]):
                     self.show_tree_analog.insert(0, [
                         self.tree_analog["date"],
                         self.tree_analog["time"],
@@ -165,17 +173,38 @@ class Provider:
             self.graph_data.remove(self.graph_data[0])
             self.graph_data.append(generate_data)
     
+    def LoadHistoricalData(self):
+        try:
+            with open("data/historical_data.json", "r") as f:
+                data = json.load(f)
+                self.alarm_historical_data = data
+                print("Load his success")
+        except FileNotFoundError:
+            pass
+            
+    def AutoSaveFile_AlarmHistorical(self):
+            try:
+                with open("data/historical_data.json", "w") as file_json:
+                    json.dump(self.alarm_historical_data, file_json, indent=4)
+            except FileNotFoundError:
+                with open("data/historical_data.json", "w") as file_json:
+                    json.dump(self.alarm_historical_data, file_json, indent=4)
+    
     def ManageHistoricalData(self, generate_data):
+                
+        data_overlimit = generate_data
+        data_overlimit[2] = " "
         if len(self.alarm_historical_data) < 10000:
-            self.alarm_historical_data.insert(0, generate_data)
+            self.alarm_historical_data.append(data_overlimit)
+            self.AutoSaveFile_AlarmHistorical()
         
-        elif len(self.alarm_historical_data) >= 10000:
+        elif len(self.alarm_historical_data) == 10000:
             current_time = datetime.datetime.now()
             filename = f"Historical_data/alarm_log-{current_time.day}-{current_time.month}-{current_time.year}{self.setting.get_TypeFileSave()[0:len(self.setting.get_TypeFileSave())-1]}"
             for i in range(len(self.alarm_historical_data)):
-                self.alarm_historical_data[i][2] = self.get_iid()
-            dataframe_historical = pd.DataFrame(self.alarm_historical_data[50:10000])
+                self.alarm_historical_data[i][2] = self.setting.get_id_historical()
+            dataframe_historical = pd.DataFrame(self.alarm_historical_data[0:9950])
             dataframe_historical.set_index("id", inplace=True)
-            self.alarm_historical_data = self.alarm_historical_data[0:50]
-            if self.setting.get_TypeFileSave() == ".csv\n":
+            self.alarm_historical_data = self.alarm_historical_data[9950:10000]
+            if self.setting.get_TypeFileSave() == ".csv":
                 dataframe_historical.to_csv(filename)

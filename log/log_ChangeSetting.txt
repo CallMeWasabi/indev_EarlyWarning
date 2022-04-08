@@ -1,0 +1,90 @@
+Change Setting Date : 8/4/2022 | Time : 5:50:3
+    Info : 
+        type_file : .xml change to -> .xml 
+        type_file_save : .csv change to -> .csv 
+        id_historical_alarm : 0 change to -> 0 
+        min_quantity_rain : 0 change to -> 0 
+        max_quantity_rain : 100 change to -> 100 
+        min_quantity_water : 20 change to -> 20 
+        max_quantity_water : 40 change to -> 40 
+        min_temperature : 20 change to -> 20 
+        max_temperature : 35 change to -> 35 
+        min_humidity : 20 change to -> 20 
+        max_humidity : 60 change to -> 60 
+
+
+Change Setting Date : 8/4/2022 | Time : 5:50:24
+    Info : 
+        type_file : .xml change to -> .xml 
+        type_file_save : .csv change to -> .csv 
+        id_historical_alarm : 0 change to -> 0 
+        min_quantity_rain : 0 change to -> 900 
+        max_quantity_rain : 100 change to -> 1000 
+        min_quantity_water : 20 change to -> 20 
+        max_quantity_water : 40 change to -> 40 
+        min_temperature : 20 change to -> 20 
+        max_temperature : 35 change to -> 35 
+        min_humidity : 20 change to -> 20 
+        max_humidity : 60 change to -> 60 
+
+
+Change Setting Date : 8/4/2022 | Time : 5:54:49
+    Info : 
+        type_file : .xml change to -> .xml 
+        type_file_save : .csv change to -> .csv 
+        id_historical_alarm : 0 change to -> 0 
+        min_quantity_rain : 0 change to -> 900 
+        max_quantity_rain : 100 change to -> 1000 
+        min_quantity_water : 20 change to -> 20 
+        max_quantity_water : 40 change to -> 40 
+        min_temperature : 20 change to -> 20 
+        max_temperature : 35 change to -> 35 
+        min_humidity : 20 change to -> 20 
+        max_humidity : 60 change to -> 60 
+
+
+Change Setting Date : 8/4/2022 | Time : 5:54:59
+    Info : 
+        type_file : .xml change to -> .xml 
+        type_file_save : .csv change to -> .csv 
+        id_historical_alarm : 0 change to -> 0 
+        min_quantity_rain : 900 change to -> 0 
+        max_quantity_rain : 1000 change to -> 100 
+        min_quantity_water : 20 change to -> 20 
+        max_quantity_water : 40 change to -> 40 
+        min_temperature : 20 change to -> 20 
+        max_temperature : 35 change to -> 35 
+        min_humidity : 20 change to -> 20 
+        max_humidity : 60 change to -> 60 
+
+
+Change Setting Date : 8/4/2022 | Time : 5:55:56
+    Info : 
+        type_file : .xml change to -> .xml 
+        type_file_save : .csv change to -> .csv 
+        id_historical_alarm : 0 change to -> 0 
+        min_quantity_rain : 0 change to -> 900 
+        max_quantity_rain : 100 change to -> 1000 
+        min_quantity_water : 20 change to -> 20 
+        max_quantity_water : 40 change to -> 40 
+        min_temperature : 20 change to -> 20 
+        max_temperature : 35 change to -> 35 
+        min_humidity : 20 change to -> 20 
+        max_humidity : 60 change to -> 60 
+
+
+Change Setting Date : 8/4/2022 | Time : 5:56:21
+    Info : 
+        type_file : .xml change to -> .xml 
+        type_file_save : .csv change to -> .csv 
+        id_historical_alarm : 0 change to -> 0 
+        min_quantity_rain : 900 change to -> 0 
+        max_quantity_rain : 1000 change to -> 100 
+        min_quantity_water : 20 change to -> 20 
+        max_quantity_water : 40 change to -> 40 
+        min_temperature : 20 change to -> 20 
+        max_temperature : 35 change to -> 35 
+        min_humidity : 20 change to -> 20 
+        max_humidity : 60 change to -> 60 
+
+

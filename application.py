@@ -304,16 +304,41 @@ class Application:
         var_min_humidity = StringVar()
         var_max_humidity = StringVar()
         
-        def message_confirm():
-            
-            def get_log_setting(dict_var_setting):
+        def get_log_setting(dict_var_setting):
                 list_log_setting = []
                 current_time = self.provider.get_time()
-                list_log_setting.append(f"Change Setting Date : {current_time.day}/{current_time.month}/{current_time.year} | Time : {current_time.hour}:{current_time.minute}:{current_time.second} \n Info : \n")
-                for i in self.setting.keys_setting:
-                    if i != "id_historical_alarm":
-                        list_log_setting.append(f"          {i} : {self.setting.dict_setting[i]} change to -> {dict_var_setting[i]} \n")
-            
+                list_log_setting.append(f"Change Setting Date : {current_time.day}/{current_time.month}/{current_time.year} | Time : {current_time.hour}:{current_time.minute}:{current_time.second}\n")
+                list_log_setting.append(f"    Info : \n")
+                for key in self.setting.keys_setting:
+                    if key == "max_humidity":
+                        list_log_setting.append(f"        {key} : {self.setting.dict_setting[key]} change to -> {dict_var_setting[key]} \n\n\n")
+                    elif key != "id_historical_alarm":
+                        list_log_setting.append(f"        {key} : {self.setting.dict_setting[key]} change to -> {dict_var_setting[key]} \n")
+                    elif key == "id_historical_alarm":
+                        list_log_setting.append(f"        {key} : {self.setting.dict_setting[key]} change to -> {self.setting.id_historical} \n")
+                try:
+                    with open("log/log_ChangeSetting.txt", "a") as f:
+                        f.writelines(list_log_setting)
+                except FileNotFoundError:
+                    with open("log/log_ChangeSetting.txt", "w") as f:
+                        f.writelines(list_log_setting)
+                
+                
+        def reset_value():
+            response_message = messagebox.askyesno(title="reset", message="Confirm reset settings ?")
+            if response_message == 1:
+                dict_log = {}
+                list_value = [".xml", ".csv", 0, 0, 100, 20, 40, 20, 35, 20, 60]
+                index = 0
+                for key in self.setting.keys_setting:
+                    dict_log[key] = list_value[index]
+                    index += 1 
+                get_log_setting(dict_log)
+                self.setting.set_SettingToDefault()
+                addTextEntry()
+                messagebox.showinfo(title="Reset Setting", message="Reset success")
+                
+        def message_confirm():
             
             response_message = messagebox.askyesno(title="Confirm", message="Confirm change settings ?")
             if response_message == 1:
@@ -329,6 +354,7 @@ class Application:
                 var_min_humidity = entry_min_humidity.get()
                 var_max_humidity = entry_max_humidity.get()
                 
+                # set dict setting
                 dict_var_setting["type_file"] = var_typefile
                 dict_var_setting["type_file_save"] = var_typefile_save
                 dict_var_setting["min_quantity_rain"] = var_min_quantity_rain
@@ -342,33 +368,43 @@ class Application:
                 
                 get_log_setting(dict_var_setting)
         
-                try:
-                    with open("EarlyWarningSetting/save_preset", "w") as f:
-                        for key in self.provider.keys_data:
-                            if key != "id_historical_alarm":
-                                f.write(f"{key}={dict_var_setting[key]}")
-                                f.write("\n")
-                            elif key == "id_historical_alarm":
-                                f.write(f"{key}={self.setting.id_historical}")
-                                f.write("\n")
-                                self.setting.set_dict_setting(dict_var_setting)
-                                
-                except FileNotFoundError:
-                    with open("EarlyWarningSetting/save_preset", "w") as f:
-                        for key in self.provider.keys_data:
-                            if key != "id_historical_alarm":
-                                f.write(f"{key}={dict_var_setting[key]}")
-                                f.write("\n")
-                            elif key == "id_historical_alarm":
-                                f.write(f"{key}={self.setting.id_historical}")
-                                f.write("\n")
-                                self.setting.set_dict_setting(dict_var_setting)
-                                
-                                
+                with open("EarlyWarningSetting/AppSetting.txt", "w") as f:
+                    for key in self.setting.keys_setting:
+                        if key != "id_historical_alarm":
+                            f.write(f"{key}={dict_var_setting[key]}")
+                            f.write("\n")
+                        elif key == "id_historical_alarm":
+                            f.write(f"{key}={self.setting.id_historical}")
+                            f.write("\n")
+                    
+                    self.setting.set_dict_setting(dict_var_setting)
+                    messagebox.showinfo(title="Success", message="Change setting success")
+
+        def addTextEntry():
+            entry_min_quantity_rain.delete(0, END)
+            entry_max_quantity_rain.delete(0, END)
+            entry_min_quantity_water.delete(0, END)
+            entry_max_quantity_water.delete(0, END)
+            entry_min_temperature.delete(0, END)
+            entry_max_temperature.delete(0, END)
+            entry_min_humidity.delete(0, END)
+            entry_max_humidity.delete(0, END)
+            
+            entry_min_quantity_rain.insert(0, self.setting.dict_setting["min_quantity_rain"])
+            entry_max_quantity_rain.insert(0, self.setting.dict_setting["max_quantity_rain"])
+            entry_min_quantity_water.insert(0, self.setting.dict_setting["min_quantity_water"])
+            entry_max_quantity_water.insert(0, self.setting.dict_setting["max_quantity_water"])
+
+            entry_min_temperature.insert(0, self.setting.dict_setting["min_temperature"])
+            entry_max_temperature.insert(0, self.setting.dict_setting["max_temperature"])
+            entry_min_humidity.insert(0, self.setting.dict_setting["min_humidity"])
+            entry_max_humidity.insert(0, self.setting.dict_setting["max_humidity"])
+        
+        
         label_typefile = Label(self.frame_setting, text="Typefile", font=("Ubuntu", 10))
         label_typefile.place(x=20, y=20)
         list_typefile = [".xml", ".json"]
-        list_typefile_save = [".csv", "json"]
+        list_typefile_save = [".csv", ".json"]
         cmb_typefile = ttk.Combobox(self.frame_setting, value=list_typefile, width=10)
         cmb_typefile.current(0)
         cmb_typefile.bind("<FocusIn>", self.Defocus)
@@ -388,12 +424,7 @@ class Application:
         entry_min_quantity_rain = Entry(self.frame_setting)
         entry_max_quantity_rain = Entry(self.frame_setting)
         entry_min_quantity_water = Entry(self.frame_setting)
-        entry_max_quantity_water = Entry(self.frame_setting)
-        entry_min_quantity_rain.insert()
-        entry_max_quantity_rain.insert()
-        entry_min_quantity_water.insert()
-        entry_max_quantity_water.insert()
-        
+        entry_max_quantity_water = Entry(self.frame_setting)      
         
         
         label_min_quantity_rain.place(x=300, y=20)
@@ -415,7 +446,7 @@ class Application:
         entry_max_temperature = Entry(self.frame_setting)
         entry_min_humidity = Entry(self.frame_setting)
         entry_max_humidity = Entry(self.frame_setting)
-        
+
         label_min_temperature.place(x=580, y=20)
         label_max_temperature.place(x=580, y=50)
         label_min_humidity.place(x=580, y=80)
@@ -426,11 +457,15 @@ class Application:
         entry_min_humidity.place(x=700, y=80)
         entry_max_humidity.place(x=700, y=110)
         
-
+        addTextEntry()
         
         
-        button_apply = Button(self.frame_setting, text="Apply", font=("Ubuntu", 12), command=message_confirm)
+        button_apply = Button(self.frame_setting, text="Apply", font=("Ubuntu", 12), command=message_confirm,)
         button_apply.pack(anchor="e", side="bottom", padx=20, pady=20)
+        button_reset = Button(self.frame_setting, text="Reset", font=("Ubuntu", 12), command=reset_value)
+        button_reset.place(x=850, y=520)
+        
+        
         
 if __name__ == "__main__":
     app = Application()     

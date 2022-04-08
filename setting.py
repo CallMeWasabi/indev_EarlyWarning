@@ -23,13 +23,14 @@ class Setting:
                              "max_humidity"]
          
         self.load_appSetting()
+        print("Load Setting Complete")
 
 
     def set_ConfigAndWriteFile(self):
         with open(self.PathAppSetting, "w") as f:
             list_lines = []
             for key in self.keys_setting:
-                list_lines.append(f"{key}={self.dict_setting[key]}")
+                list_lines.append(f"{key}={self.dict_setting[key]}\n")
             f.writelines(list_lines)
             
     
@@ -82,6 +83,7 @@ class Setting:
                 for line in f:
                     try:
                         (key, value) = line.split("=")
+                        value = value[0:len(value)-1]
                         if key == "type_file":
                             self.TypeFile = value
                             self.dict_setting[key] = value
@@ -93,9 +95,9 @@ class Setting:
                             self.dict_setting[key] = value
                         else:
                             self.dict_setting[key] = value
+                    
                     except IndentationError:
-                        self.create_FileAppSetting()
-                        
+                        self.create_FileAppSetting()    
         except FileNotFoundError:
             self.create_FileAppSetting()
     
@@ -111,7 +113,7 @@ class Setting:
     def get_id_historical(self):
         value = self.id_historical
         self.id_historical = str(int(self.id_historical) + 1)
-        self.dict_setting["id_historical_alarm"] = self.id_historical + "\n"
+        self.dict_setting["id_historical_alarm"] = self.id_historical
         self.set_ConfigAndWriteFile()
         return value
 
@@ -120,4 +122,5 @@ class Setting:
             if key != "id_historical_alarm":
                 self.dict_setting[key] = dict_new_setting[key]
             elif key == "id_historical_alarm":
-                self.dict_setting[key] = self.get_id_historical()
+                self.dict_setting[key] = self.id_historical
+        print(self.dict_setting)
