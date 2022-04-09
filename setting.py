@@ -23,7 +23,7 @@ class Setting:
                              "max_humidity"]
          
         self.load_appSetting()
-        print("Load Setting Complete")
+        print("[LOGS] Load Setting Complete")
 
 
     def set_ConfigAndWriteFile(self):

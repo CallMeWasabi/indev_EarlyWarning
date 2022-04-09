@@ -16,6 +16,7 @@ class Application:
         def write_log(mode):
             with open("log/log_startapp", mode) as f:
                 current_time = datetime.datetime.now()
+                print(f"[LOGS] AppStart : {current_time.day}-{current_time.month}-{current_time.year} | {current_time.hour}:{current_time.minute}:{current_time.second}")
                 f.write(f"AppStart : {current_time.day}-{current_time.month}-{current_time.year} | {current_time.hour}:{current_time.minute}:{current_time.second}\n")
         
         try:

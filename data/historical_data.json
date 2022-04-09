@@ -187,5 +187,473 @@
         "Lower the limit",
         " ",
         " "
+    ],
+    [
+        "8/4/2022",
+        "7:12:35",
+        19,
+        "quantity_water",
+        "Lower the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:12:40",
+        20,
+        "quantity_water",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:12:40",
+        19,
+        "temperature",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:12:50",
+        19,
+        "humidity",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:12:55",
+        18,
+        "quantity_water",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:12:55",
+        17,
+        "temperature",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:12:55",
+        20,
+        "humidity",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:0",
+        18,
+        "quantity_water",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:0",
+        20,
+        "humidity",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:5",
+        20,
+        "quantity_rain",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:5",
+        19,
+        "quantity_water",
+        "Lower the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:5",
+        20,
+        "temperature",
+        "Lower the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:10",
+        19,
+        "quantity_rain",
+        "Lower the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:15",
+        20,
+        "temperature",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:20",
+        19,
+        "quantity_rain",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:20",
+        18,
+        "quantity_water",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:20",
+        17,
+        "temperature",
+        "Lower the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:25",
+        19,
+        "quantity_water",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:25",
+        18,
+        "temperature",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:25",
+        17,
+        "humidity",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:30",
+        15,
+        "quantity_water",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:30",
+        14,
+        "humidity",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:35",
+        12,
+        "quantity_water",
+        "Lower the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:40",
+        11,
+        "quantity_water",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:40",
+        10,
+        "temperature",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:45",
+        8,
+        "quantity_water",
+        "Lower the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:50",
+        7,
+        "quantity_rain",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:50",
+        6,
+        "quantity_water",
+        "Lower the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:50",
+        5,
+        "temperature",
+        "Lower the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:55",
+        3,
+        "quantity_rain",
+        "Lower the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:55",
+        2,
+        "temperature",
+        "Lower the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:13:55",
+        1,
+        "humidity",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "8/4/2022",
+        "7:14:0",
+        " ",
+        "temperature",
+        "Lower the limit",
+        " ",
+        " "
+    ],
+    [
+        "9/4/2022",
+        "20:18:39",
+        20,
+        "quantity_rain",
+        "Lower the limit",
+        " ",
+        " "
+    ],
+    [
+        "9/4/2022",
+        "20:18:39",
+        19,
+        "quantity_water",
+        "Lower the limit",
+        " ",
+        " "
+    ],
+    [
+        "9/4/2022",
+        "20:18:39",
+        20,
+        "temperature",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "9/4/2022",
+        "20:18:39",
+        19,
+        "humidity",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "9/4/2022",
+        "20:18:44",
+        19,
+        "quantity_water",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "9/4/2022",
+        "20:18:44",
+        20,
+        "temperature",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "9/4/2022",
+        "20:18:44",
+        19,
+        "humidity",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "9/4/2022",
+        "20:18:49",
+        16,
+        "temperature",
+        "Lower the limit",
+        " ",
+        " "
+    ],
+    [
+        "9/4/2022",
+        "20:18:59",
+        14,
+        "quantity_rain",
+        "Lower the limit",
+        " ",
+        " "
+    ],
+    [
+        "9/4/2022",
+        "20:19:4",
+        12,
+        "quantity_water",
+        "Lower the limit",
+        " ",
+        " "
+    ],
+    [
+        "9/4/2022",
+        "20:19:4",
+        11,
+        "temperature",
+        "Lower the limit",
+        " ",
+        " "
+    ],
+    [
+        "9/4/2022",
+        "20:19:9",
+        8,
+        "humidity",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "9/4/2022",
+        "20:19:19",
+        6,
+        "quantity_water",
+        "Lower the limit",
+        " ",
+        " "
+    ],
+    [
+        "9/4/2022",
+        "20:19:19",
+        5,
+        "humidity",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "9/4/2022",
+        "20:19:29",
+        2,
+        "quantity_rain",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "9/4/2022",
+        "20:19:29",
+        1,
+        "quantity_water",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "9/4/2022",
+        "20:19:34",
+        " ",
+        "quantity_water",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "9/4/2022",
+        "20:20:46",
+        " ",
+        "quantity_water",
+        "Higher the limit",
+        " ",
+        " "
+    ],
+    [
+        "9/4/2022",
+        "20:20:46",
+        " ",
+        "temperature",
+        "Lower the limit",
+        " ",
+        " "
     ]
 ]

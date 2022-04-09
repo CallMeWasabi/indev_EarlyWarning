@@ -178,7 +178,7 @@ class Provider:
             with open("data/historical_data.json", "r") as f:
                 data = json.load(f)
                 self.alarm_historical_data = data
-                print("Load his success")
+                print("[LOGS] Load Historical Complete")
         except FileNotFoundError:
             pass
             
