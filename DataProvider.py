@@ -23,6 +23,7 @@ class Provider:
         self.show_tree_analog = []
         self.error_point = []
         self.iid_station = 0
+        self.limitRenderGraph = 0
         
         self.LoadHistoricalData()
         
@@ -167,9 +168,9 @@ class Provider:
             self.show_tree_analog.pop()
     
     def ManageGraphData(self, generate_data):
-        if len(self.graph_data) < 8640:
+        if len(self.graph_data) < 10:
             self.graph_data.append(generate_data)
-        elif len(self.graph_data) >= 8640:
+        elif len(self.graph_data) == 10:
             self.graph_data.remove(self.graph_data[0])
             self.graph_data.append(generate_data)
     
@@ -208,3 +209,4 @@ class Provider:
             self.alarm_historical_data = self.alarm_historical_data[9950:10000]
             if self.setting.get_TypeFileSave() == ".csv":
                 dataframe_historical.to_csv(filename)
+                print("[LOGS] Trans Historical data to csv complete")

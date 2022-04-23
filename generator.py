@@ -24,8 +24,3 @@ class Generator:
         dict_child["humidity"] = str(random.randint(20, 80))
         dict_child["hardware_fail"] = str(random.randint(0,1))
         return dict_child
-
-
-        
-
-    
